@@ -3,32 +3,37 @@ pipeline {
 
     stages {
 
-        // Baixa o código do repositório Git configurado no Jenkins
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        // O Jenkins faz o checkout automaticamente em um Pipeline Declarativo.
+        // Por isso, não precisamos de um stage Checkout manual aqui.
 
-        // Instala as dependências exatamente como estão definidas
-        // no package-lock.json
+        // Entra na pasta app/ e instala as dependências.
+        // O npm ci usa o package-lock.json para instalar exatamente
+        // as versões registradas no projeto.
         stage('Instalar dependências') {
             steps {
-                sh 'npm ci'
+                dir('app') {
+                    sh 'npm ci'
+                }
             }
         }
 
-        // Executa os testes automatizados definidos no package.json
+        // Executa os testes definidos no package.json
+        // dentro da pasta app/.
         stage('Testes') {
             steps {
-                sh 'npm test'
+                dir('app') {
+                    sh 'npm test'
+                }
             }
         }
 
         // Executa o script de build definido no package.json
+        // dentro da pasta app/.
         stage('Build') {
             steps {
-                sh 'npm run build'
+                dir('app') {
+                    sh 'npm run build'
+                }
             }
         }
     }
