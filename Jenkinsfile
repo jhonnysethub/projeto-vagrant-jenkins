@@ -12,7 +12,7 @@ pipeline {
         stage('Instalar dependências') {
             steps {
                 dir('app') {
-                    sh 'npm ci'
+                    sh 'cd app && npm ci'
                 }
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('Testes') {
             steps {
                 dir('app') {
-                    sh 'npm test'
+                    sh 'cd app && npm test'
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('app') {
-                    sh 'npm run build'
+                    sh 'cd app && npm run build'
                 }
             }
         }
