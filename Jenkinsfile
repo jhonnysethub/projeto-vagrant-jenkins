@@ -36,5 +36,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sshagent(""){
+                    sh ""
+                }
+            }
+        }
     }
 }
