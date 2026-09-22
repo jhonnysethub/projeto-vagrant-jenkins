@@ -44,7 +44,7 @@ pipeline {
                 sshagent(['app']) {
                     sh '''
                         ssh vagrant@192.168.56.11 "mkdir -p /home/vagrant/app"
-                        scp -r app/. vagrant@192.168.56.11:/home/vagrant/app/
+                        scp -r app/* vagrant@192.168.56.11:/home/vagrant/app/
                     '''
                 }
             }
