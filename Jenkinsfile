@@ -37,12 +37,15 @@ pipeline {
             }
         }
 
-        // Testa a comunicação SSH entre o Jenkins e a máquina de produção.
+        // Faz o deploy da aplicação para a máquina de produção.
         // A credencial "app" fornece a chave privada para o SSH Agent.
         stage('Deploy') {
             steps {
                 sshagent(['app']) {
-                    sh 'ssh vagrant@192.168.56.11 hostname'
+                    sh '''
+                        ssh vagrant@192.168.56.11 "mkdir -p /home/vagrant/app"
+                        scp -r app/. vagrant@192.168.56.11:/home/vagrant/app/
+                    '''
                 }
             }
         }
