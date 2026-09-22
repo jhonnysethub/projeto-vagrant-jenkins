@@ -12,7 +12,7 @@ pipeline {
         stage('Instalar dependências') {
             steps {
                 dir('app') {
-                    sh 'cd app && npm ci'
+                    sh 'npm ci'
                 }
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('Testes') {
             steps {
                 dir('app') {
-                    sh 'cd app && npm test'
+                    sh 'npm test'
                 }
             }
         }
@@ -32,15 +32,17 @@ pipeline {
         stage('Build') {
             steps {
                 dir('app') {
-                    sh 'cd app && npm run build'
+                    sh 'npm run build'
                 }
             }
         }
 
+        // Testa a comunicação SSH entre o Jenkins e a máquina de produção.
+        // A credencial "app" fornece a chave privada para o SSH Agent.
         stage('Deploy') {
             steps {
-                sshagent(""){
-                    sh ""
+                sshagent(['app']) {
+                    sh 'ssh vagrant@192.168.56.11 hostname'
                 }
             }
         }
